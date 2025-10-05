@@ -64,8 +64,7 @@ const Dashboard = () => {
     <div className="min-h-screen bg-background">
       <div className="container mx-auto px-4 py-8 max-w-7xl">
         <div className="mb-12">
-          <h1 className="text-4xl font-bold text-foreground mb-2"># Sport Academy Dashboard</h1>
-          <p className="text-muted-foreground text-lg">Comprehensive management system for your sports academy</p>
+          <h1 className="text-4xl font-bold text-foreground mb-2">Sport Academy Dashboard</h1>
         </div>
 
         <div className="space-y-8">
@@ -91,22 +90,6 @@ const Dashboard = () => {
           ))}
         </div>
 
-        <Card className="mt-12 p-8 border-none">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div>
-              <div className="text-4xl font-bold text-primary mb-2">1,234</div>
-              <div className="text-card-foreground">Total Trainees</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-primary mb-2">45</div>
-              <div className="text-card-foreground">Active Coaches</div>
-            </div>
-            <div>
-              <div className="text-4xl font-bold text-primary mb-2">12</div>
-              <div className="text-card-foreground">Sports Offered</div>
-            </div>
-          </div>
-        </Card>
       </div>
     </div>
   );

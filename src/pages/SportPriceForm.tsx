@@ -1,0 +1,145 @@
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import FormLayout from "@/components/FormLayout";
+import { Button } from "@/components/ui/button";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { toast } from "sonner";
+import { ArrowRight } from "lucide-react";
+
+const formSchema = z.object({
+  sportId: z.string().min(1, "Sport is required"),
+  branchId: z.string().min(1, "Branch is required"),
+  subsTypeId: z.string().min(1, "Subscription type is required"),
+  price: z.number().min(0, "Price must be positive"),
+});
+
+const SportPriceForm = () => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      sportId: "",
+      branchId: "",
+      subsTypeId: "",
+      price: 0,
+    },
+  });
+
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    setIsLoading(true);
+    try {
+      console.log("Submitting sport price:", values);
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      toast.success("Sport price created successfully");
+      form.reset();
+    } catch (error) {
+      toast.error("Failed to create sport price");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  return (
+    <FormLayout title="Set Sport Price">
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <FormField
+              control={form.control}
+              name="sportId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Sport</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select sport" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">Basketball</SelectItem>
+                      <SelectItem value="2">Football</SelectItem>
+                      <SelectItem value="3">Swimming</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="branchId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Branch</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select branch" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">Downtown Branch</SelectItem>
+                      <SelectItem value="2">Uptown Branch</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="subsTypeId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Subscription Type</FormLabel>
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <FormControl>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select type" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="1">Monthly</SelectItem>
+                      <SelectItem value="2">Quarterly</SelectItem>
+                      <SelectItem value="3">Annual</SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Price ($)</FormLabel>
+                  <FormControl>
+                    <Input type="number" step="0.01" {...field} onChange={e => field.onChange(parseFloat(e.target.value))} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <Button type="submit" disabled={isLoading} className="w-full md:w-auto">
+            {isLoading ? "Submitting..." : "Set Price"}
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </form>
+      </Form>
+    </FormLayout>
+  );
+};
+
+export default SportPriceForm;

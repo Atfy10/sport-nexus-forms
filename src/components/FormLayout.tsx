@@ -21,7 +21,7 @@ const FormLayout = ({ title, children }: FormLayoutProps) => {
         </Link>
         
         <Card className="p-8 border-none">
-          <h1 className="text-3xl font-bold text-card-foreground mb-8">{title}</h1>
+          <h1 className="text-3xl font-bold text-card-foreground mb-8"># {title}</h1>
           {children}
         </Card>
       </div>
